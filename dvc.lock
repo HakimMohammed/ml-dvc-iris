@@ -1,0 +1,62 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python scripts/preprocess.py
+    deps:
+    - path: data/iris.csv
+      hash: md5
+      md5: 21d441a28bce4417276097df955afc50
+      size: 2928
+    - path: scripts/preprocess.py
+      hash: md5
+      md5: 2fb2ff5645f34e2023487d71ac8154f8
+      size: 916
+    outs:
+    - path: data/iris_preprocessed.csv
+      hash: md5
+      md5: d5c8c285a6517aa04a4863fadaf11b5a
+      size: 12288
+  train:
+    cmd: python src/train.py
+    deps:
+    - path: data/iris_preprocessed.csv
+      hash: md5
+      md5: d5c8c285a6517aa04a4863fadaf11b5a
+      size: 12288
+    - path: params.yaml
+      hash: md5
+      md5: cfc4e4d5a12169381b8b4e52dde3b725
+      size: 287
+    - path: src/train.py
+      hash: md5
+      md5: 7c0c7ab7363ed0b0023930933846870a
+      size: 2238
+    outs:
+    - path: metrics/train_metrics.json
+      hash: md5
+      md5: ff44e5a7bb6e6883dc5a152b6d37b53c
+      size: 140
+    - path: models/random_forest.pkl
+      hash: md5
+      md5: 5c9de994696f9a8fa1e1b2b4f320ccf0
+      size: 325873
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - path: data/iris_preprocessed.csv
+      hash: md5
+      md5: d5c8c285a6517aa04a4863fadaf11b5a
+      size: 12288
+    - path: models/random_forest.pkl
+      hash: md5
+      md5: 5c9de994696f9a8fa1e1b2b4f320ccf0
+      size: 325873
+    - path: src/evaluate.py
+      hash: md5
+      md5: 2c135bcf00ab7a3350c31145f6e5fc5f
+      size: 1444
+    outs:
+    - path: metrics/eval_metrics.json
+      hash: md5
+      md5: a607fe8694f1be9f8ae2cc39c8a7a051
+      size: 473
